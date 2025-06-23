@@ -61,6 +61,15 @@ function App() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
+  // Cleanup camera on unmount
+  useEffect(() => {
+    return () => {
+      if (currentCamera) {
+        currentCamera.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [currentCamera]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
