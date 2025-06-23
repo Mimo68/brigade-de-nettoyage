@@ -180,7 +180,11 @@ async def get_cleaning_report(report_id: str):
         if report:
             return CleaningReport(**report)
         else:
+            logger.error(f"Cleaning report not found: {report_id}")
             raise HTTPException(status_code=404, detail="Cleaning report not found")
+    except HTTPException as he:
+        # Re-raise HTTP exceptions as-is
+        raise he
     except Exception as e:
         logger.error(f"Error fetching cleaning report: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error fetching cleaning report: {str(e)}")
