@@ -107,27 +107,33 @@ user_problem_statement: "Create a building cleaning control application with for
 backend:
   - task: "Core cleaning report API endpoints"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "Created POST /api/cleaning-report and GET /api/cleaning-reports endpoints with CleaningReport model including all form fields"
+        - working: true
+          agent: "testing"
+          comment: "Tested all API endpoints (POST /api/cleaning-report, GET /api/cleaning-reports, GET /api/cleaning-report/{id}). Fixed an issue with error handling for non-existent reports. All endpoints are working correctly with proper data validation and error handling."
 
   - task: "MongoDB data storage for cleaning reports"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "Added MongoDB collection 'cleaning_reports' with proper document structure"
+        - working: true
+          agent: "testing"
+          comment: "Verified data persistence in MongoDB. Created multiple test reports with different evaluation values (bien, satisfaisant, insuffisant) and confirmed they were correctly stored and retrievable. Base64 photo data is properly handled."
 
 frontend:
   - task: "Complete cleaning control form UI"
@@ -169,7 +175,7 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
@@ -183,3 +189,5 @@ test_plan:
 agent_communication:
     - agent: "main"
       message: "Created complete cleaning control application with form sections, photo uploads, and backend API. Need to test backend endpoints first before proceeding with email integration."
+    - agent: "testing"
+      message: "Completed testing of backend API endpoints. Created comprehensive tests for all endpoints (POST /api/cleaning-report, GET /api/cleaning-reports, GET /api/cleaning-report/{id}). Fixed an issue with error handling for non-existent reports. All endpoints are now working correctly with proper data validation and error handling. MongoDB data storage is working properly, with successful creation and retrieval of reports with various evaluation values. Base64 photo data is handled correctly."
