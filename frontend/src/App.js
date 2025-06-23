@@ -54,6 +54,12 @@ function App() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
+  const [currentCamera, setCurrentCamera] = useState(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const [currentPhotoSection, setCurrentPhotoSection] = useState('');
+  
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
