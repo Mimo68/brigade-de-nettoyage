@@ -69,6 +69,58 @@ function App() {
     }));
   };
 
+  const startCamera = async (section) => {
+    try {
+      setCurrentPhotoSection(section);
+      setShowCamera(true);
+      
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          facingMode: 'environment' // Use back camera if available
+        } 
+      });
+      
+      setCurrentCamera(stream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Erreur accès caméra:', error);
+      alert('Impossible d\'accéder à la caméra. Vérifiez les permissions.');
+    }
+  };
+
+  const stopCamera = () => {
+    if (currentCamera) {
+      currentCamera.getTracks().forEach(track => track.stop());
+      setCurrentCamera(null);
+    }
+    setShowCamera(false);
+    setCurrentPhotoSection('');
+  };
+
+  const takePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0);
+      
+      const photoData = canvas.toDataURL('image/jpeg', 0.8);
+      
+      setFormData(prev => ({
+        ...prev,
+        [`${currentPhotoSection}Photo`]: photoData
+      }));
+      
+      stopCamera();
+    }
+  };
+
   const handlePhotoUpload = (e, section) => {
     const file = e.target.files[0];
     if (file) {
